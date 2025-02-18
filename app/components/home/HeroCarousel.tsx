@@ -1,11 +1,10 @@
 import React from 'react'
 import hero1 from '@/public/running.jpg'
 import hero2 from '@/public/handsinwater.jpg'
-import hero3 from '@/public/blackradiantskin.avif'
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel'
 import { Card, CardContent } from '@/components/ui/card'
 import Image from 'next/image'
-const carouselImages = [hero1, hero2, hero3]
+const carouselImages = [hero1, hero2]
 
 function HeroCarousel() {
   return (
