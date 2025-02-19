@@ -42,6 +42,7 @@ async function ProductContainer({layout, search}: {layout:string, search:string}
         </div>
         <Separator className="mt-4" />
       </section>
+      
       {/* PRODUCTS */}
       <div>
         {totalProducts === 0 ? (

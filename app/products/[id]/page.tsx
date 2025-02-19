@@ -1,26 +1,14 @@
-
-import { fetchSingleProduct} from "@/utils/actions";
+import React from "react";
+import { fetchSingleProduct } from "../../../utils/actions";
+import { formatCurrency } from "../../../utils/format";
+import BreadCrumbs from "../../components/single-product/BreadCrumbs";
 import Image from "next/image";
-import { formatCurrency } from "@/utils/format";
-import BreadCrumbs from "@/app/components/single-product/BreadCrumbs";
-import FavoriteToggleButton from "@/app/components/products/FavoriteToggleButton";
-import ProductRating from "@/app/components/single-product/ProductRating";
-import AddToCart from "@/app/components/single-product/AddToCart";
-
+import FavoriteToggleButton from '../../components/products/FavoriteToggleButton'
+import ProductRating from '../../components/single-product/ProductRating'
+import AddToCart from '../../components/single-product/AddToCart'
 
 async function SingleProductPage({ params }: { params: { id: string } }) {
-  console.log("params:", params); // Debugging
-   let product;
-   try {
-     product = await fetchSingleProduct(params.id);
-   } catch (error) {
-     console.error(error);
-     return <p className="text-red-500">Error loading product.</p>;
-   }
-
-   if (!product) {
-     return <p className="text-red-500">Product not found.</p>;
-   }
+  const product = await fetchSingleProduct(params.id);
   const { name, image, company, description, price } = product;
   const dollarsAmount = formatCurrency(price);
 
@@ -39,7 +27,7 @@ async function SingleProductPage({ params }: { params: { id: string } }) {
             className="w-full rounded object-cover"
           />
         </div>
-        {/* PRODUCT INFO SECOND COL */}
+        {/*PRODUCT FIRST COL */}
         <div>
           <div className="flex gap-x-8 items-center">
             <h1 className="capitalize text-3xl font-bold">{name} </h1>
@@ -59,4 +47,5 @@ async function SingleProductPage({ params }: { params: { id: string } }) {
     </section>
   );
 }
+
 export default SingleProductPage;
