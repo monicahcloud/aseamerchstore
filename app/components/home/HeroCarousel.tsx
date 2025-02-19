@@ -22,7 +22,6 @@ return <CarouselItem key={index}>
 </CarouselItem>
       })}
     </CarouselContent>
-     
         <CarouselPrevious/>
       <CarouselNext/>
    

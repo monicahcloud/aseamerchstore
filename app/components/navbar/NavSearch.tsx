@@ -18,18 +18,20 @@ function NavSearch() {
       params.delete("search");
     }
     replace(`/products?${params.toString()}`);
-  }, 300);
+  }, 500);
 
   useEffect(() => {
     if (!searchParams.get("search")) {
       setSearch("");
     }
-  }, [searchParams.get("search")]);
+  },[searchParams]);
+
+
   return (
     <Input
       type="search"
       placeholder="search product..."
-      className="max-w-xs dark:bg-muted "
+      className="max-w-xs dark:bg-muted"
       onChange={(e) => {
         setSearch(e.target.value);
         handleSearch(e.target.value);
