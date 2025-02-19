@@ -1,4 +1,5 @@
 import ProductContainer from "../components/products/ProductContainer";
+
 async function ProductsPage({
   searchParams,
 }: {
