@@ -4,11 +4,12 @@ import "./globals.css";
 import NavBar from "./components/navbar/NavBar";
 import Container from "./components/global/Container";
 import Providers from "./providers";
+import {ClerkProvider} from "@clerk/nextjs"
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Next Storefront",
+  title: "ASEA Merch",
   description: "A nifty store built with Next.js",
 };
 
@@ -19,14 +20,16 @@ export default function RootLayout({
 }>) {
   return (
     <>
-      <html lang="en" suppressHydrationWarning>
-        <body className={inter.className}>
-          <Providers>
-            <NavBar />
-            <Container className="py-20">{children}</Container>
-          </Providers>
-        </body>
-      </html>
+      <ClerkProvider>
+        <html lang="en" suppressHydrationWarning>
+          <body className={inter.className}>
+            <Providers>
+              <NavBar />
+              <Container className="py-20">{children}</Container>
+            </Providers>
+          </body>
+        </html>
+      </ClerkProvider>
     </>
   );
 }
