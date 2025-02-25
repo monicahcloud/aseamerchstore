@@ -4,7 +4,8 @@ import { currentUser } from "@clerk/nextjs/server";
 import { prisma } from "./prisma";
 import { redirect } from "next/navigation";
 import { imageSchema, productSchema, validateWithZodSchema } from "./schemas";
-import { uploadImage } from "./supabase";
+import { deleteImage, uploadImage } from "./supabase";
+import { revalidatePath } from "next/cache";
 
 const getAuthUser = async () => {
   const user = await currentUser();
@@ -79,4 +80,37 @@ export const createProductAction = async (
     return renderError(error);
   }
    redirect("/admin/products");
+};
+
+const getAdminUser = async () => {
+  const user = await getAuthUser()
+  if(user.id !== process.env.ADMIN_USER_ID) redirect('/')
+    return user
+}
+
+export const fetchAdminProducts = async () => {
+  await getAdminUser()
+  const products = await prisma.product.findMany({
+    orderBy: {
+      createdAt: 'desc'
+    }
+  })
+  return products
+}
+
+export const deleteProductAction = async (prevState: { productId: string }) => {
+  const { productId } = prevState;
+  await getAdminUser();
+  try {
+    const product = await prisma.product.delete({
+      where: {
+        id: productId,
+      },
+    });
+    await deleteImage(product.image);
+    revalidatePath("/admin/products");
+    return { message: "product removed" };
+  } catch (error) {
+    return renderError(error);
+  }
 };
