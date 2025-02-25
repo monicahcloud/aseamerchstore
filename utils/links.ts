@@ -1,5 +1,6 @@
 import { ForwardRefExoticComponent, RefAttributes } from "react";
 import {
+  DollarSign,
   HomeIcon,
   ListOrdered,
   LucideProps,
@@ -18,6 +19,11 @@ type NavLink = {
   icon: ForwardRefExoticComponent<
     Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>
   >;
+};
+
+type AdminLink = {
+  label: string;
+  href: string;
 };
 export const links: NavLink[] = [
   {
@@ -62,4 +68,18 @@ export const links: NavLink[] = [
     icon: ListOrdered,
     label: "orders",
   },
+  {
+    id: nanoid(),
+    name: "Dashboard",
+    href: "/admin/products",
+    icon: ListOrdered,
+    label: "dashboard",
+  },
+];
+
+export const adminLinks: AdminLink[] = [
+  { href: "/admin/products", label: "my products" },
+ 
+  { href: "/admin/products/create", label: "create product" },
+   { href: "/admin/sales", label: "sales" },
 ];

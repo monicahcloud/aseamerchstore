@@ -1,16 +1,32 @@
-import { prisma } from "./prisma"
-import { redirect } from "next/navigation";
+"use server";
 
+import { currentUser } from "@clerk/nextjs/server";
+import { prisma } from "./prisma";
+import { redirect } from "next/navigation";
+import { imageSchema, productSchema, validateWithZodSchema } from "./schemas";
+import { uploadImage } from "./supabase";
+
+const getAuthUser = async () => {
+  const user = await currentUser();
+  if (!user) redirect("/");
+  return user;
+};
+
+const renderError = (error: unknown): { message: string } => {
+  console.log(error);
+  return {
+    message: error instanceof Error ? error.message : "an error occurred",
+  };
+};
 
 export const fetchFeaturedProducts = async () => {
-
-    const products = await prisma.product.findMany({
-        where: {
-            featured: true,
-        },
-    })
-    return products;
-}
+  const products = await prisma.product.findMany({
+    where: {
+      featured: true,
+    },
+  });
+  return products;
+};
 
 export const fetchAllProducts = ({ search = "" }: { search: string }) => {
   return prisma.product.findMany({
@@ -36,4 +52,31 @@ export const fetchSingleProduct = async (productId: string) => {
     redirect("/products");
   }
   return product;
+};
+
+export const createProductAction = async (
+  prevState: any,
+  formData: FormData
+): Promise<{ message: string }> => {
+ const user = await getAuthUser();
+  try {
+    const rawData = Object.fromEntries(formData);
+     const file = formData.get("image") as File;
+    const validatedFields = validateWithZodSchema(productSchema, rawData);
+    const validatedFile = validateWithZodSchema(imageSchema, { image: file });
+    
+     const fullPath = await uploadImage(validatedFile.image);
+
+    await prisma.product.create({
+      data: {
+        ...validatedFields,
+        image: fullPath,
+        clerkId: user.id,
+      },
+    });
+    
+  } catch (error) {
+    return renderError(error);
+  }
+   redirect("/admin/products");
 };
