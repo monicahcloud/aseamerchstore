@@ -57,7 +57,7 @@ export const fetchSingleProduct = async (productId: string) => {
 };
 
 export const createProductAction = async (
-  prevState: any,
+  prevState: unknown,
   formData: FormData
 ): Promise<{ message: string }> => {
  const user = await getAuthUser();
@@ -128,7 +128,7 @@ export const fetchAdminProductDetails = async (productId: string) => {
 };
 
 export const updateProductAction = async (
-  prevState: any,
+  prevState: unknown,
   formData: FormData
 ) => {
   await getAdminUser();
@@ -152,7 +152,7 @@ export const updateProductAction = async (
   }
 };
 export const updateProductImageAction = async (
-  prevState: any,
+  prevState: unknown,
   formData: FormData
 ) => {
   await getAuthUser();
@@ -526,7 +526,7 @@ export const updateCartItemAction = async ({
     });
     await updateCart(cart);
     revalidatePath("/cart");
-    return { message: "cart updated" };
+    return { message: "Cart Updated" };
   } catch (error) {
     return renderError(error);
   }

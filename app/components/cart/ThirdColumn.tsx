@@ -1,18 +1,14 @@
 "use client";
 import { useState } from "react";
-
-import { Mode } from "../single-product/SelectProductAmount";
 import FormContainer from "../form/FormContainer";
 import { SubmitButton } from "../form/Buttons";
 import { removeCartItemAction, updateCartItemAction } from "@/utils/actions";
 import { useToast } from "@/hooks/use-toast";
-import SelectProductAmount from "../single-product/SelectProductAmount";
-
-
+import SelectProductAmount, { Mode } from "../single-product/SelectProductAmount";
 
 function ThirdColumn({ quantity, id }: { quantity: number; id: string }) {
   const [amount, setAmount] = useState(quantity);
-  const [isLoading, setIsLoading] = useState(false);
+  const [ isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
 
   const handleAmountChange = async (value: number) => {
