@@ -532,41 +532,41 @@ export const updateCartItemAction = async ({
   }
 };
 
-// export const createOrderAction = async (prevState: unknown, formData: FormData) => {
-//   const user = await getAuthUser();
-//   let orderId: null | string = null;
-//   let cartId: null | string = null;
+ export const createOrderAction = async (prevState:unknown, formData: FormData) => {
+  const user = await getAuthUser();
+  let orderId: null | string = null;
+  let cartId: null | string = null;
 
-//   try {
-//     const cart = await fetchOrCreateCart({
-//       userId: user.id,
-//       errorOnFailure: true,
-//     });
-//     cartId = cart.id;
+  try {
+    const cart = await fetchOrCreateCart({
+      userId: user.id,
+      errorOnFailure: true,
+    });
+    cartId = cart.id;
 
-//     await prisma.order.deleteMany({
-//       where: {
-//         clerkId: user.id,
-//         isPaid: false,
-//       },
-//     });
+    await prisma.order.deleteMany({
+      where: {
+        clerkId: user.id,
+        isPaid: false,
+      },
+    });
 
-//     const order = await prisma.order.create({
-//       data: {
-//         clerkId: user.id,
-//         products: cart.numItemsInCart,
-//         orderTotal: cart.orderTotal,
-//         tax: cart.tax,
-//         shipping: cart.shipping,
-//         email: user.emailAddresses[0].emailAddress,
-//       },
-//     });
-//     orderId = order.id;
-//   } catch (error) {
-//     return renderError(error);
-//   }
-//   redirect(`/checkout?orderId=${orderId}&cartId=${cartId}`);
-// };
+    const order = await prisma.order.create({
+      data: {
+        clerkId: user.id,
+        products: cart.numItemsInCart,
+        orderTotal: cart.orderTotal,
+        tax: cart.tax,
+        shipping: cart.shipping,
+        email: user.emailAddresses[0].emailAddress,
+      },
+    });
+    orderId = order.id;
+  } catch (error) {
+    return renderError(error);
+  }
+  redirect(`/checkout?orderId=${orderId}&cartId=${cartId}`);
+};
 
 export const fetchUserOrders = async () => {
   const user = await getAuthUser();
