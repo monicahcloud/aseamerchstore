@@ -1,5 +1,4 @@
 import { fetchProductReviews } from "@/utils/actions";
-
 import ReviewCard from "./ReviewCard";
 import SectionTitle from "../components/global/SectionTitle";
 
