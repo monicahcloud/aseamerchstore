@@ -6,6 +6,7 @@ import Image from "next/image";
 import FavoriteToggleButton from '../../components/products/FavoriteToggleButton'
 import ProductRating from '../../components/single-product/ProductRating'
 import AddToCart from '../../components/single-product/AddToCart'
+import ShareButton from "@/app/components/single-product/ShareButton";
 
 async function SingleProductPage({ params }: { params: { id: string } }) {
   const product = await fetchSingleProduct(params.id);
@@ -33,6 +34,7 @@ async function SingleProductPage({ params }: { params: { id: string } }) {
             <h1 className="capitalize text-3xl font-bold">{name} </h1>
             <div className="flex items-center gap-x-2">
               <FavoriteToggleButton productId={params.id} />
+              <ShareButton name={product.name} productId={params.id}/>
             </div>
           </div>
           <ProductRating productId={params.id} />
