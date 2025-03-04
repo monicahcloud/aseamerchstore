@@ -532,7 +532,7 @@ export const updateCartItemAction = async ({
   }
 };
 
- export const createOrderAction = async (prevState:unknown, formData: FormData) => {
+ export const createOrderAction = async (prevState: unknown, formData: FormData) => {
   const user = await getAuthUser();
   let orderId: null | string = null;
   let cartId: null | string = null;
