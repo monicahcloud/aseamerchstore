@@ -45,9 +45,9 @@ const { userId } = auth();
           {links.map((link) => {
               if (link.label === "dashboard" && !isAdmin) return null;
             return (
-              <DropdownMenuItem key={link.href}>
+              <DropdownMenuItem key={link.href} asChild>
                 <Link href={link.href} className="capitalize w-full">
-                  {link.label}
+                  {link.icon && <link.icon className="w-5 h-5" />} {link.label}
                 </Link>
               </DropdownMenuItem>
             );

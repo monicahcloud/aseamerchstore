@@ -1,9 +1,11 @@
 import { ForwardRefExoticComponent, RefAttributes } from "react";
 import {
-  DollarSign,
+  
   HomeIcon,
+  LayoutDashboard,
   ListOrdered,
   LucideProps,
+  NotebookPen,
   Shirt,
   ShoppingCart,
   Star,
@@ -56,6 +58,13 @@ export const links: NavLink[] = [
   },
   {
     id: nanoid(),
+    name: "Reviews",
+    href: "/reviews",
+    icon: NotebookPen,
+    label: "reviews",
+  },
+  {
+    id: nanoid(),
     name: "Cart",
     href: "/cart",
     icon: ShoppingCart,
@@ -72,7 +81,7 @@ export const links: NavLink[] = [
     id: nanoid(),
     name: "Dashboard",
     href: "/admin/products",
-    icon: ListOrdered,
+    icon: LayoutDashboard,
     label: "dashboard",
   },
 ];
