@@ -3,7 +3,7 @@
 import { currentUser } from "@clerk/nextjs/server";
 import { prisma } from "./prisma";
 import { redirect } from "next/navigation";
-import { imageSchema, productSchema, validateWithZodSchema } from "./schemas";
+import { imageSchema, productSchema, reviewSchema, validateWithZodSchema } from "./schemas";
 import { deleteImage, uploadImage } from "./supabase";
 import { revalidatePath } from "next/cache";
 
@@ -233,4 +233,98 @@ export const fetchUserFavorites = async () => {
     },
   });
   return favorites;
+};
+
+export const createReviewAction = async (
+  prevState: unknown,
+  formData: FormData
+) => {
+  const user = await getAuthUser();
+  try {
+    const rawData = Object.fromEntries(formData);
+    const validatedFields = validateWithZodSchema(reviewSchema, rawData);
+    await prisma.review.create({
+      data: {
+        ...validatedFields,
+        clerkId: user.id,
+      },
+    });
+    revalidatePath(`/products/${validatedFields.productId}`);
+    return { message: "review submitted successfully" };
+  } catch (error) {
+    return renderError(error);
+  }
+};
+
+export const fetchProductReviews = async (productId: string) => {
+  const reviews = await prisma.review.findMany({
+    where: {
+      productId,
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
+  return reviews;
+};
+export const fetchProductRating = async (productId: string) => {
+  const result = await prisma.review.groupBy({
+    by: ["productId"],
+    _avg: {
+      rating: true,
+    },
+    _count: {
+      rating: true,
+    },
+    where: { productId },
+  });
+  return {
+    rating: result[0]?._avg.rating?.toFixed(1) ?? 0,
+    count: result[0]?._count.rating ?? 0,
+  };
+};
+
+export const fetchProductReviewsByUser = async () => {
+  const user = await getAuthUser();
+  const reviews = await prisma.review.findMany({
+    where: {
+      clerkId: user.id,
+    },
+    select: {
+      id: true,
+      rating: true,
+      comment: true,
+      product: {
+        select: {
+          image: true,
+          name: true,
+        },
+      },
+    },
+  });
+  return reviews;
+};
+export const deleteReviewAction = async (prevState: { reviewId: string }) => {
+  const { reviewId } = prevState;
+  const user = await getAuthUser();
+  try {
+    await prisma.review.delete({
+      where: {
+        id: reviewId,
+        clerkId: user.id,
+      },
+    });
+    revalidatePath("/reviews");
+    return { message: "review deleted successfully" };
+  } catch (error) {
+    return renderError(error);
+  }
+};
+export const findExistingReview = async (userId: string, productId: string) => {
+  return prisma.review.findFirst({
+    where: {
+      clerkId: userId,
+      productId,
+    },
+  });
 };
