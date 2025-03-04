@@ -304,6 +304,7 @@ export const fetchProductReviewsByUser = async () => {
   });
   return reviews;
 };
+
 export const deleteReviewAction = async (prevState: { reviewId: string }) => {
   const { reviewId } = prevState;
   const user = await getAuthUser();
@@ -320,6 +321,7 @@ export const deleteReviewAction = async (prevState: { reviewId: string }) => {
     return renderError(error);
   }
 };
+
 export const findExistingReview = async (userId: string, productId: string) => {
   return prisma.review.findFirst({
     where: {
