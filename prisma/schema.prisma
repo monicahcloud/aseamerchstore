@@ -47,7 +47,6 @@ model Review {
   productId String
 }
 
-
 model Cart {
   id        String   @id @default(uuid())
   clerkId  String
