@@ -565,7 +565,8 @@ export const updateCartItemAction = async ({
   } catch (error) {
     return renderError(error);
   }
-  redirect(`/checkout?orderId=${orderId}&cartId=${cartId}`);
+  // redirect(`/checkout?orderId=${orderId}&cartId=${cartId}`);
+  redirect('/orders')
 };
 
 export const fetchUserOrders = async () => {
