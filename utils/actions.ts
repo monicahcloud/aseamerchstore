@@ -532,7 +532,7 @@ export const updateCartItemAction = async ({
   }
 };
 
- export const createOrderAction = async (prevState: unknown, formData: FormData) => {
+export const createOrderAction = async (prevState: unknown, formData: FormData) => {
   const user = await getAuthUser();
   let orderId: null | string = null;
   let cartId: null | string = null;
@@ -565,8 +565,7 @@ export const updateCartItemAction = async ({
   } catch (error) {
     return renderError(error);
   }
-  // redirect(`/checkout?orderId=${orderId}&cartId=${cartId}`);
-  redirect('/orders')
+  redirect(`/checkout?orderId=${orderId}&cartId=${cartId}`);
 };
 
 export const fetchUserOrders = async () => {
